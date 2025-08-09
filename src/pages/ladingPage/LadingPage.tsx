@@ -88,7 +88,7 @@ const LadingPage: React.FC = () => {
             </section>
 
             {/* --- Phần giới thiệu Ngày hội của Đoàn --- */}
-            <section className="py-20 bg-white max-w-7xl">
+            <section className="py-20 bg-white w-full">
                 <div className="container mx-auto px-4 grid md:grid-cols-2 items-center gap-12">
                     <motion.div
                         initial={{ opacity: 0, x: -50 }}
