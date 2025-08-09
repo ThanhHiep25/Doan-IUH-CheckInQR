@@ -4,7 +4,7 @@ export interface User {
   name: string;
   email: string;
   seatNumber: string;
-  organization: string;
+  organization?: string;
   avatar: string;
   address?: {
     street: string;
