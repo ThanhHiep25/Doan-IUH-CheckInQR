@@ -1,0 +1,18 @@
+[
+  {
+    "id": "P002",
+    "name": "Leanne Graham",
+    "username": "Bret",
+    "email": "lM6lI@example.com",
+    "seatNumber" : "20"
+    
+  },
+  {
+
+    "id": "P001",
+    "name": "Trần Văn Quang",
+    "username": "Quang",
+    "email": "yGt2M@example.com",
+    "seatNumber" : "22"
+  }
+]
