@@ -1,9 +1,11 @@
+// src/components/QRCodeScanner.tsx
 
 import React, { useRef, useState, useEffect } from "react";
 import { Html5Qrcode, Html5QrcodeSupportedFormats } from "html5-qrcode";
 import { QrCode, CheckCircle, XCircle } from "lucide-react";
 import { checkIn } from "../../type/checkIn";
 import type { User } from "../../interface/user_its";
+import { socket } from "../../socket/socket";
 
 const QRCodeScanner: React.FC = () => {
     const [isScanning, setIsScanning] = useState(false);
@@ -13,7 +15,46 @@ const QRCodeScanner: React.FC = () => {
     const html5QrCodeRef = useRef<Html5Qrcode | null>(null);
     const [scanKey, setScanKey] = useState(0);
 
-    // Hàm để khởi động scanner
+    // useEffect này chỉ để lắng nghe các sự kiện từ socket và chạy một lần
+    useEffect(() => {
+        const handleWelcome = (data: User) => {
+            console.log("Sự kiện 'welcome' đã nhận được:", data);
+            setParticipantInfo(data);
+            setScanResult("success");
+            // Tự động quét lại sau 5 giây
+            setTimeout(handleScanAgain, 5000);
+            console.log('====================================');
+            console.log(scannedId);
+            console.log('====================================');
+        };
+        
+        const handleStatsUpdate = () => {
+            console.log("Sự kiện 'stats-update' đã nhận được. Cập nhật thống kê.");
+            // Logic để cập nhật thống kê có thể được đặt ở đây
+        };
+
+        socket.on('welcome', handleWelcome);
+        socket.on('stats-update', handleStatsUpdate);
+
+        return () => {
+            socket.off('welcome', handleWelcome);
+            socket.off('stats-update', handleStatsUpdate);
+        };
+    }, []); // Mảng rỗng đảm bảo hook chỉ chạy một lần
+
+    const stopScanner = async () => {
+        if (html5QrCodeRef.current && html5QrCodeRef.current.isScanning) {
+            try {
+                await html5QrCodeRef.current.stop();
+                console.log("Scanner đã dừng thành công.");
+            } catch (err) {
+                console.error("Lỗi khi dừng scanner:", err);
+            } finally {
+                html5QrCodeRef.current = null;
+            }
+        }
+    };
+
     const startScanner = async () => {
         const config = {
             fps: 10,
@@ -38,36 +79,25 @@ const QRCodeScanner: React.FC = () => {
                         const userId = match[0];
                         setScannedId(userId);
                         try {
-                            const response = await checkIn(userId);
-                            setScanResult("success");
-                            setParticipantInfo(response.participant);
-
-                            // Lấy danh sách ghế đã check-in từ localStorage
-                            const existingSeats = JSON.parse(localStorage.getItem('checkedInSeats') || '[]') as string[];
-                            // Thêm ghế mới vào danh sách nếu chưa tồn tại
-                            if (!existingSeats.includes(response.participant.seatNumber)) {
-                                existingSeats.push(response.participant.seatNumber);
-                            }
-                            // Lưu lại danh sách đã cập nhật
-                            localStorage.setItem('checkedInSeats', JSON.stringify(existingSeats));
-                            // Lưu thông tin người vừa check-in
-                            localStorage.setItem('participantInfo', JSON.stringify(response.participant));
-
-                            console.log(`Check-in thành công cho người dùng ID: ${userId}`);
+                            // Gửi yêu cầu check-in đến backend
+                            await checkIn(userId);
+                            // Sau khi check-in thành công, không cần setScanResult ở đây.
+                            // Chúng ta sẽ đợi sự kiện 'welcome' từ server.
                         } catch (error) {
                             if (error instanceof Error && error.message.includes("Already checked in")) {
                                 setScanResult("already-checked-in");
                                 console.log("Người dùng đã check-in trước đó.");
-                                // Có thể lấy thông tin người dùng từ server hoặc localStorage để hiển thị
+                                setTimeout(handleScanAgain, 5000);
                             } else {
                                 setScanResult("error");
                                 console.error("Lỗi khi check-in:", error);
+                                setTimeout(handleScanAgain, 5000);
                             }
-
                         }
                     } else {
                         setScanResult("invalid");
                         console.error("Mã QR không hợp lệ:", qrCodeMessage);
+                        setTimeout(handleScanAgain, 3000);
                     }
                 },
                 (errorMessage) => {
@@ -78,25 +108,11 @@ const QRCodeScanner: React.FC = () => {
             );
         } catch (err) {
             console.error("Lỗi khi khởi động camera:", err);
-            stopScanner();
+            await stopScanner();
         }
     };
 
-    // Hàm để dừng scanner
-    const stopScanner = async () => {
-        if (html5QrCodeRef.current && html5QrCodeRef.current.isScanning) {
-            try {
-                await html5QrCodeRef.current.stop();
-                console.log("Scanner đã dừng thành công.");
-            } catch (err) {
-                console.error("Lỗi khi dừng scanner:", err);
-            } finally {
-                html5QrCodeRef.current = null;
-            }
-        }
-    };
-
-    // Sử dụng useEffect để theo dõi isScanning và scanKey
+    // useEffect này để khởi động và dừng scanner dựa trên trạng thái `isScanning`
     useEffect(() => {
         if (isScanning) {
             startScanner();
@@ -108,11 +124,7 @@ const QRCodeScanner: React.FC = () => {
         };
     }, [isScanning, scanKey]);
 
-    // Hàm bắt đầu quét
     const handleStartScanning = () => {
-        if (scannedId) localStorage.setItem("scannedUserId", scannedId)
-        // Xóa thông tin người dùng vừa check-in để UserDisplayPage reset
-        localStorage.removeItem('participantInfo');
         setScannedId(null);
         setScanResult(null);
         setParticipantInfo(null);
@@ -120,12 +132,10 @@ const QRCodeScanner: React.FC = () => {
         setScanKey(prevKey => prevKey + 1);
     };
 
-    // Hàm dừng quét
     const handleStopScanning = () => {
         setIsScanning(false);
     };
 
-    // Hàm xử lý việc quét lại
     const handleScanAgain = () => {
         handleStartScanning();
     };
@@ -207,22 +217,13 @@ const QRCodeScanner: React.FC = () => {
             )}
 
             {/* Trạng thái lỗi check-in */}
-            {scanResult === "error" && (
+            {(scanResult === "error" || scanResult === "already-checked-in") && (
                 <div className="flex flex-col items-center justify-center p-8 bg-gray-800 rounded-3xl shadow-xl max-w-sm w-full text-center animate-shake">
                     <XCircle size={64} strokeWidth={2} className="text-red-500" />
-                    <h2 className="text-3xl font-extrabold my-4 text-red-400">Lỗi check-in!</h2>
-                    {
-                        scanResult === "error" ? (
-                            <p className="text-xl mb-6 text-gray-300">
-                               Hiện tại không thể check-in. Vui'hui thử lại.
-                            </p>
-                        ):(
-                            <p className="text-xl mb-6 text-gray-300">
-                                Vui'hui thử lại với mã QR khác.
-                            </p>
-                        )
-                    }
-
+                    <h2 className="text-3xl font-extrabold my-4 text-red-400">{scanResult === "already-checked-in" ? "Đã check-in trước đó!" : "Lỗi check-in!"}</h2>
+                    <p className="text-xl mb-6 text-gray-300">
+                        {scanResult === "already-checked-in" ? "Người dùng này đã được check-in." : "Hiện tại không thể check-in. Vui lòng thử lại."}
+                    </p>
                     <button
                         onClick={handleScanAgain}
                         className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-full transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-red-500 focus:ring-opacity-50"

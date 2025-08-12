@@ -1,54 +1,54 @@
 import React, { useState, useEffect } from "react";
 import type { User } from "../../interface/user_its";
+import { socket } from "../../socket/socket";
 
 const UserDisplayPage: React.FC = () => {
     const [user, setUser] = useState<User | null>(null);
 
-
+    // Sử dụng useEffect để lắng nghe sự kiện 'welcome' từ server
     useEffect(() => {
-        const handleStorageChange = () => {
-            const participantInfo = localStorage.getItem("participantInfo");
-            if (participantInfo) {
-                try {
-                    const parsedUser = JSON.parse(participantInfo);
-                    // Giả sử dữ liệu participantInfo khớp với kiểu User
-                    setUser(parsedUser);
-                } catch (e) {
-                    console.error("Lỗi khi phân tích dữ liệu từ localStorage:", e);
-                    setUser(null);
-                }
-            } else {
-                setUser(null);
-            }
-        };
+        // Lắng nghe sự kiện 'welcome'
+        socket.on('welcome', (participant: User) => {
+            console.log("Đã nhận sự kiện 'welcome' từ server:", participant);
+            setUser(participant);
+        });
 
-        // Lắng nghe sự kiện storage để cập nhật tự động khi có thay đổi
-        window.addEventListener("storage", handleStorageChange);
-        handleStorageChange(); // Lần đầu tiên tải trang
-        
+        // Dọn dẹp listener khi component bị hủy
         return () => {
-            window.removeEventListener("storage", handleStorageChange);
+            socket.off('welcome');
         };
     }, []);
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white p-8">
-            {user && (
-                <div className="mt-12 p-6 bg-gray-800 rounded-xl shadow-2xl text-center max-w-md w-full animate-fade-in">
-                    <img src="/logo_doan.png" alt="Logo" className="mx-auto mb-4 w-20 h-20" />
-                    <h2 className="text-3xl font-bold text-green-400 mb-2">Chào mừng tham gia đại hội!</h2>
-                    <img src={user.avatar} alt=" Avatar" className="mx-auto mb-4 w-60 h-60  border-2 border-green-400" />
-                    <p className="text-lg text-gray-200">
-                       {user.name}
+        <div className="relative flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white p-8">
+             <img src="/bg.jpg" alt="bg" className="w-full h-full object-cover absolute top-0 left-0 z-0" />
+            {user ? (
+                <div className="mt-5 p-4  rounded-xl text-center max-w-xl w-full animate-fade-in z-10">
+                    <img src="/logo_dang.png" alt="Logo" className="mx-auto mb-5 w-40 h-30" />
+                    <h2 className="text-3xl roboto-6 text-red-600 mb-2">ĐẠI HỘI ĐẠI BIỂU</h2>
+                   <h2 className="text-3xl roboto-6 text-red-600 mb-2">ĐẢNG BỘ PHƯỜNG THÔNG TÂY HỘI </h2>
+                   <h2 className="text-3xl roboto-6 text-red-600 mb-2">LẦN THỨ I, NHIỆM KỲ 2025 - 2030</h2>
+                   <h3 className="text-3xl dancing-script text-red-600 my-5">Chào mừng Đại biểu</h3>
+                    {user.avatar && (
+                        <img src={user.avatar} alt="Avatar" className="mx-auto mb-4 w-50 h-60 object-cover" />
+                    )}
+                    <p className="text-3xl text-red-500 roboto-6">
+                        {user.name}
                     </p>
-                    <p className="text-lg text-gray-200">
+                    <p className="text-xl text-red-500">
                         {user.organization}
                     </p>
-                    <p className="text-2xl mt-4 font-extrabold text-green-400">
+                    {/* <p className="text-2xl mt-4 font-extrabold text-green-400">
                         Hàng ghế của bạn: {user.seatNumber}
-                    </p>
+                    </p> */}
+                </div>
+            ):(
+                <div className="text-center z-10 p-8 bg-gray-800 rounded-3xl shadow-xl max-w-lg w-full">
+                    <h2 className="text-3xl font-bold text-red-500 mb-4">Không tìm thấy người dùng!</h2>
+                    <p className="text-lg text-gray-400">Vui liệu kiểm tra lại đường dẫn.</p>
                 </div>
             )}
+            
         </div>
     );
 };

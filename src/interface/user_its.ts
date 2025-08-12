@@ -1,11 +1,10 @@
 export interface User {
-
   id: string;
   name: string;
-  email: string;
+  email?: string;
   seatNumber: string;
-  organization?: string;
-  avatar: string;
+  organization?: string; // Sử dụng dấu ? vì thuộc tính này có thể không có
+  avatar?: string;
   address?: {
     street: string;
     suite: string;

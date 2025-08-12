@@ -35,3 +35,27 @@ export const checkIn = async (userId: string) => {
         throw error;
     }
 };
+
+
+// Định nghĩa kiểu dữ liệu cho Participant nếu bạn chưa có
+interface Participant {
+    id: string;
+    name: string;
+    seatNumber: string;
+    // ... các trường khác
+}
+
+interface StatsResponse {
+    checkedInParticipants: Participant[];
+}
+
+// Hàm mới để lấy danh sách người đã check-in
+export const getCheckedInStats = async (): Promise<StatsResponse> => {
+    try {
+        const response = await api.get<StatsResponse>("/participants/stats");
+        return response.data;
+    } catch (error) {
+        console.error("Lỗi khi fetch stats:", error);
+        throw error;
+    }
+};

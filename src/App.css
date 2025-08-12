@@ -1,8 +1,25 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap');
 @import "tailwindcss";
 
 .roboto {
   font-family: "Roboto", sans-serif;
   font-optical-sizing: auto;
+}
+
+.roboto-6 {
+  font-weight: 900;
+  font-style: normal;
+  font-stretch: normal;
+  font-variant: normal;
+  letter-spacing: normal;
+  text-transform: none;
+  font-family: "Roboto", sans-serif;
+  font-optical-sizing: auto;
+}
+
+.dancing-script {
+  font-family: "Dancing Script", cursive;
+  font-optical-sizing: auto;
+  font-weight: 900;
 }
