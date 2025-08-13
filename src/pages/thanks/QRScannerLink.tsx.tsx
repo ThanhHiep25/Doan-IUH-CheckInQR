@@ -142,9 +142,10 @@ const QRCodeScanner: React.FC = () => {
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white p-8 animate-fade-in">
+               <img src="/bg.jpg" alt="bg" className="w-full h-full object-cover absolute top-0 left-0 z-0" />
             {/* Trạng thái ban đầu */}
             {!isScanning && !scanResult && (
-                <div className="flex flex-col items-center justify-center p-8 bg-gray-800 rounded-3xl shadow-xl max-w-sm w-full text-center transform transition-all duration-500 ease-in-out scale-100 hover:scale-105">
+                <div className="flex flex-col items-center justify-center p-8 bg-white/30 backdrop-blur-lg rounded-3xl shadow-xl max-w-sm w-full text-center transform transition-all duration-500 ease-in-out scale-100 hover:scale-105">
                     <div className="mb-6">
                         <QrCode size={96} strokeWidth={1} className="text-blue-400 animate-pulse-slow" />
                     </div>
@@ -163,8 +164,8 @@ const QRCodeScanner: React.FC = () => {
 
             {/* Trạng thái đang quét */}
             {isScanning && (
-                <div className="flex flex-col items-center justify-center p-8 bg-gray-800 rounded-3xl shadow-xl max-w-sm w-full text-center">
-                    <h2 className="text-2xl font-bold mb-4 text-gray-300">Đưa mã QR vào camera</h2>
+                <div className="flex flex-col items-center justify-center p-8 bg-white/30 backdrop-blur-lg rounded-3xl shadow-xl max-w-sm w-full text-center z-50">
+                    <h2 className="text-2xl font-bold mb-4 text-blue-300">Đưa mã QR vào camera</h2>
                     <div id="qr-reader" className="w-full max-w-[300px] mb-6" />
                     <button
                         onClick={handleStopScanning}
@@ -177,7 +178,7 @@ const QRCodeScanner: React.FC = () => {
 
             {/* Trạng thái quét thành công và check-in thành công */}
             {scanResult === "success" && participantInfo && (
-                <div className="mt-10 flex flex-col items-center justify-center p-8 bg-gray-800 rounded-3xl shadow-xl max-w-sm w-full text-center animate-scale-in">
+                <div className="mt-10 flex flex-col items-center justify-center p-8 bg-gray-800 rounded-3xl shadow-xl max-w-sm w-full text-center animate-scale-in z-50">
                     <CheckCircle size={64} strokeWidth={2} className="text-green-500" />
                     <h2 className="text-3xl font-extrabold my-4 text-green-400">Check-in thành công!</h2>
                     {participantInfo.avatar && (
@@ -201,7 +202,7 @@ const QRCodeScanner: React.FC = () => {
 
             {/* Trạng thái mã QR không hợp lệ */}
             {scanResult === "invalid" && (
-                <div className="flex flex-col items-center justify-center p-8 bg-gray-800 rounded-3xl shadow-xl max-w-sm w-full text-center animate-shake">
+                <div className="flex flex-col mt-10 items-center justify-center p-8 bg-gray-800 rounded-3xl shadow-xl max-w-sm w-full text-center animate-shake z-50">
                     <XCircle size={64} strokeWidth={2} className="text-red-500" />
                     <h2 className="text-3xl font-extrabold my-4 text-red-400">Mã QR không hợp lệ!</h2>
                     <p className="text-xl mb-6 text-gray-300">
@@ -218,7 +219,7 @@ const QRCodeScanner: React.FC = () => {
 
             {/* Trạng thái lỗi check-in */}
             {(scanResult === "error" || scanResult === "already-checked-in") && (
-                <div className="flex flex-col items-center justify-center p-8 bg-gray-800 rounded-3xl shadow-xl max-w-sm w-full text-center animate-shake">
+                <div className="flex flex-col mt-10 items-center justify-center p-8 bg-gray-800 rounded-3xl shadow-xl max-w-sm w-full text-center animate-shake z-50">
                     <XCircle size={64} strokeWidth={2} className="text-red-500" />
                     <h2 className="text-3xl font-extrabold my-4 text-red-400">{scanResult === "already-checked-in" ? "Đã check-in trước đó!" : "Lỗi check-in!"}</h2>
                     <p className="text-xl mb-6 text-gray-300">

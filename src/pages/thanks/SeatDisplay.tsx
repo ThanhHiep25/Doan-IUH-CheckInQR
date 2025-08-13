@@ -78,19 +78,19 @@ const SeatDisplayPage: React.FC = () => {
     const seats = useMemo(() => ({
         lanhDaoKhachMoi: {
             left: [
-                '223', '239', '240','222', '218', '233',
+                '223', '239', '240', '222', '218', '233',
                 '181', '182', '183', '184', '185', '186',
                 '192', '191', '190', '189', '188', '187',
                 '193', '194', '195', '196', '197', '198',
                 '204', '203', '202', '201', '200', '199',
                 '205', '206', '207', '208', '209', '236',
             ],
-            backrow:[
+            backrow: [
                 '216', '215', '214', '213', '212', '210',
                 '221', '224', '225', '226', '227', '228',
                 '238', '237', '234', '232', '230', '229',
                 '242', '243', '244', '245', '246', '247',
-                ' ',' ', ' ', ' ', '249', '248',
+                ' ', ' ', ' ', ' ', '249', '248',
             ]
         },
         lanhDaoKhachMoi2: {
@@ -110,8 +110,8 @@ const SeatDisplayPage: React.FC = () => {
                 createSeats(72, 67),
                 createSeats(78, 73, true),
                 createSeats(79, 84),
-                createSeats(85, 90 , true),
-               ),
+                createSeats(85, 90, true),
+            ),
             backrow: createSeats(91, 96).concat(
                 createSeats(102, 97, true),
                 createSeats(103, 108),
@@ -131,16 +131,16 @@ const SeatDisplayPage: React.FC = () => {
         },
         thuky: {
             left: [
-                '217', '219', '211','231', '235','','220','241'
+                '217', '219', '211', '231', '235', '', '220', '241'
             ],
         }
     }), []);
 
-    const renderSeatBlock = (title: string, seatNumbers: string[], gridCols = 6, showStage = false) => (
+    const renderSeatBlock = (title: string, seatNumbers: string[], showStage = false) => (
         <div className="flex flex-col items-center">
             {title && <h3 className="text-[14px] text-blue-600 font-extrabold mb-2">{title}</h3>}
             {showStage && <div className="w-full h-10 mb-[-10px] bg-yellow-200 rounded-2xl"></div>}
-            <div className={`grid grid-cols-${gridCols} gap-1.5 p-2 mt-5 bg-gray-800/10 backdrop-blur-md rounded-lg`}>
+            <div className={`grid grid-cols-6 gap-1.5 p-2 mt-5 bg-gray-800/10 backdrop-blur-md rounded-lg`}>
                 {seatNumbers.map(seatNumber => (
                     <div
                         key={seatNumber}
@@ -198,20 +198,20 @@ const SeatDisplayPage: React.FC = () => {
                 {/* Khu vực Ban thư ký và Đại biểu */}
                 <div className="flex flex-col md:flex-row justify-center w-full space-y-4 md:space-y-0 md:space-x-8">
                     <div className="flex-1 space-y-[10px] ">
-                        {renderSeatBlock("", seats.lanhDaoKhachMoi.left, 6)}
-                        {renderSeatBlock(" ", seats.lanhDaoKhachMoi.backrow, 6)}
+                        {renderSeatBlock("", seats.lanhDaoKhachMoi.left)}
+                        {renderSeatBlock(" ", seats.lanhDaoKhachMoi.backrow)}
                     </div>
                     <div className="flex-1 space-y-2">
-                        {renderSeatBlock("LÃNH ĐẠO - KHÁCH MỜI", seats.lanhDaoKhachMoi2.left, 6, true)}
-                        {renderSeatBlock(" ", seats.lanhDaoKhachMoi2.backrow, 6)}
+                        {renderSeatBlock("LÃNH ĐẠO - KHÁCH MỜI", seats.lanhDaoKhachMoi2.left, true)}
+                        {renderSeatBlock(" ", seats.lanhDaoKhachMoi2.backrow)}
                     </div>
                     <div className="flex-1 space-y-2">
-                        {renderSeatBlock("LÃNH ĐẠO - KHÁCH MỜI", seats.lanhDaoKhachMoi3.left, 6, true)}
-                        {renderSeatBlock(" ", seats.lanhDaoKhachMoi3.backrow, 6)}
+                        {renderSeatBlock("LÃNH ĐẠO - KHÁCH MỜI", seats.lanhDaoKhachMoi3.left, true)}
+                        {renderSeatBlock(" ", seats.lanhDaoKhachMoi3.backrow)}
                     </div>
                     <div className="flex-1 space-y-2">
-                        {renderSeatBlock("BAN THẨM TRA TƯ CÁCH ĐẠI BIỂU - BCH ", seats.btttcdbBCH.left, 6, true)}
-                        {renderSeatBlock(" ", seats.btttcdbBCH.backrow, 6)}
+                        {renderSeatBlock("BAN THẨM TRA TƯ CÁCH ĐẠI BIỂU - BCH ", seats.btttcdbBCH.left, true)}
+                        {renderSeatBlock(" ", seats.btttcdbBCH.backrow)}
                     </div>
                 </div>
 
