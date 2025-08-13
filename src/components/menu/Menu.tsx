@@ -52,7 +52,8 @@ const LoginPopup = ({ isOpen, onClose, onLoginSuccess }: LoginPopupProps) => {
                         exit={{ y: "-100vh", opacity: 0 }}
                         className="bg-white p-8 rounded-lg shadow-xl w-96"
                     >
-                        <h2 className="text-2xl font-bold mb-4 text-center text-black">Đăng nhập</h2>
+                        <img src="/logo_dang.png" alt=" Logo" className="mx-auto mb-5 w-40 h-30" />
+                        <p className="text-3xl roboto-6 text-red-600 mb-2 text-center">Đăng nhập</p>
                         {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
                         <form onSubmit={handleLogin} className="flex flex-col gap-4">
                             <input
