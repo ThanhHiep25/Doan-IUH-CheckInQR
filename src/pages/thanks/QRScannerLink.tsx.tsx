@@ -22,7 +22,7 @@ const QRCodeScanner: React.FC = () => {
             setParticipantInfo(data);
             setScanResult("success");
             // Tự động quét lại sau 5 giây
-            setTimeout(handleScanAgain, 5000);
+           // setTimeout(handleScanAgain, 5000);
             console.log('====================================');
             console.log(scannedId);
             console.log('====================================');
@@ -81,23 +81,25 @@ const QRCodeScanner: React.FC = () => {
                         try {
                             // Gửi yêu cầu check-in đến backend
                             await checkIn(userId);
+                            setScanResult("success");
                             // Sau khi check-in thành công, không cần setScanResult ở đây.
+                            console.log(`Check-in thành công cho người dùng ID: ${userId}`);
                             // Chúng ta sẽ đợi sự kiện 'welcome' từ server.
                         } catch (error) {
                             if (error instanceof Error && error.message.includes("Already checked in")) {
                                 setScanResult("already-checked-in");
                                 console.log("Người dùng đã check-in trước đó.");
-                                setTimeout(handleScanAgain, 5000);
+                              //  setTimeout(handleScanAgain, 5000);
                             } else {
                                 setScanResult("error");
                                 console.error("Lỗi khi check-in:", error);
-                                setTimeout(handleScanAgain, 5000);
+                               // setTimeout(handleScanAgain, 5000);
                             }
                         }
                     } else {
                         setScanResult("invalid");
                         console.error("Mã QR không hợp lệ:", qrCodeMessage);
-                        setTimeout(handleScanAgain, 3000);
+                      //  setTimeout(handleScanAgain, 3000);
                     }
                 },
                 (errorMessage) => {
@@ -178,18 +180,18 @@ const QRCodeScanner: React.FC = () => {
 
             {/* Trạng thái quét thành công và check-in thành công */}
             {scanResult === "success" && participantInfo && (
-                <div className="mt-10 flex flex-col items-center justify-center p-8 bg-gray-800 rounded-3xl shadow-xl max-w-sm w-full text-center animate-scale-in z-50">
-                    <CheckCircle size={64} strokeWidth={2} className="text-green-500" />
-                    <h2 className="text-3xl font-extrabold my-4 text-green-400">Check-in thành công!</h2>
+                <div className="mt-3 flex flex-col items-center justify-center p-3 bg-gray-800 rounded-3xl shadow-xl max-w-sm w-full text-center animate-scale-in z-50">
+                    <CheckCircle size={44} strokeWidth={2} className="text-green-500" />
+                    <h2 className="text-2xl font-extrabold my-4 text-green-400">Check-in thành công!</h2>
                     {participantInfo.avatar && (
                         <img
                             src={participantInfo.avatar}
                             alt="Avatar"
-                            className="w-40 h-40 rounded-md mx-auto mb-4 border-2 border-green-500"
+                            className="w-30 h-36 rounded-md mx-auto mb-4 border-2 border-green-500 object-cover"
                         />
                     )}
-                    <p className="text-2xl font-bold text-gray-100 mb-2">{participantInfo.name}</p>
-                    <p className="text-xl text-gray-300 mb-2">Tổ chức: {participantInfo.organization}</p>
+                    <p className="text-xl font-bold text-gray-100 mb-2">{participantInfo.name}</p>
+                    <p className="text-md text-gray-300 mb-2">{participantInfo.organization}</p>
                     <p className="text-lg font-semibold text-gray-300 mb-6">Số ghế: {participantInfo.seatNumber}</p>
                     <button
                         onClick={handleScanAgain}
@@ -202,7 +204,7 @@ const QRCodeScanner: React.FC = () => {
 
             {/* Trạng thái mã QR không hợp lệ */}
             {scanResult === "invalid" && (
-                <div className="flex flex-col mt-10 items-center justify-center p-8 bg-gray-800 rounded-3xl shadow-xl max-w-sm w-full text-center animate-shake z-50">
+                <div className="flex flex-col mt-3 items-center justify-center p-8 bg-gray-800 rounded-3xl shadow-xl max-w-sm w-full text-center animate-shake z-50">
                     <XCircle size={64} strokeWidth={2} className="text-red-500" />
                     <h2 className="text-3xl font-extrabold my-4 text-red-400">Mã QR không hợp lệ!</h2>
                     <p className="text-xl mb-6 text-gray-300">
@@ -219,7 +221,7 @@ const QRCodeScanner: React.FC = () => {
 
             {/* Trạng thái lỗi check-in */}
             {(scanResult === "error" || scanResult === "already-checked-in") && (
-                <div className="flex flex-col mt-10 items-center justify-center p-8 bg-gray-800 rounded-3xl shadow-xl max-w-sm w-full text-center animate-shake z-50">
+                <div className="flex flex-col mt-3 items-center justify-center p-8 bg-gray-800 rounded-3xl shadow-xl max-w-sm w-full text-center animate-shake z-50">
                     <XCircle size={64} strokeWidth={2} className="text-red-500" />
                     <h2 className="text-3xl font-extrabold my-4 text-red-400">{scanResult === "already-checked-in" ? "Đã check-in trước đó!" : "Lỗi check-in!"}</h2>
                     <p className="text-xl mb-6 text-gray-300">

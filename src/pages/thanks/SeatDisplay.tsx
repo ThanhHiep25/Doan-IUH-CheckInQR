@@ -164,7 +164,7 @@ const SeatDisplayPage: React.FC = () => {
         <div className="relative flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white p-8">
             <img src="/bg.jpg" alt="bg" className="w-full h-full object-cover absolute top-0 left-0 z-0" />
 
-            <div className="absolute top-[33%] left-30 md:grid hidden grid-cols-1 gap-1 p-1 bg-gray-800/10 backdrop-blur-md rounded-lg">
+            <div className="absolute top-[15%] left-30 md:grid hidden grid-cols-1 gap-1 p-1 bg-gray-800/10 backdrop-blur-md rounded-lg">
                 {createSeatNumbers(1, 6).map(seatNumber => (
                     <div
                         key={seatNumber}
@@ -175,7 +175,7 @@ const SeatDisplayPage: React.FC = () => {
                 ))}
             </div>
 
-            <div className="absolute top-[64%] left-30 md:grid hidden grid-cols-1 gap-1 p-1 bg-gray-800/10 backdrop-blur-md rounded-lg">
+            <div className="absolute top-[55%] left-30 md:grid hidden grid-cols-1 gap-1 p-1 bg-gray-800/10 backdrop-blur-md rounded-lg">
                 {createSeatNumbers(7, 12).map(seatNumber => (
                     <div
                         key={seatNumber}
@@ -189,10 +189,7 @@ const SeatDisplayPage: React.FC = () => {
             <div className="relative w-full max-w-7xl mx-auto flex flex-col items-center space-y-8">
                 {/* Khu vực sân khấu và Đoàn chủ tịch */}
                 <div className="bg-red-900 p-4 rounded-lg shadow-xl w-full text-center">
-                    <h2 className="text-2xl font-bold mb-2">Sơ đồ sân khấu</h2>
-                    <div className="flex justify-center flex-wrap gap-2">
-                        <img src="/banner-sankhau.jpg" alt="Đoàn Chủ tịch" className="w-full h-60" />
-                    </div>
+                    <h2 className="text-2xl font-bold">ĐẠI HỘI ĐẠI BIỂU ĐẢNG BỘ PHƯỜNG THÔNG TÂY HỘI LẦN THỨ I, NHIỆM KỲ 2025 - 2030</h2>
                 </div>
 
                 {/* Khu vực Ban thư ký và Đại biểu */}

@@ -13,7 +13,7 @@ import { AirplayIcon } from "lucide-react";
 
 const RoutesBr: React.FC = () => {
     // Khởi tạo state để điều khiển việc hiển thị
-    const [showComponents, setShowComponents] = useState(true);
+    const [showComponents, setShowComponents] = useState(false);
 
     const handleToggle = () => {
         setShowComponents(!showComponents);
