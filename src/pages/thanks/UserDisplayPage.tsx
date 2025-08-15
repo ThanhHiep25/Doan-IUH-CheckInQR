@@ -28,7 +28,7 @@ const UserDisplayPage: React.FC = () => {
                     <h2 className="text-3xl roboto-6 text-red-600 mb-2">ĐẠI HỘI ĐẠI BIỂU</h2>
                    <h2 className="text-3xl roboto-6 text-red-600 mb-2">ĐẢNG BỘ PHƯỜNG THÔNG TÂY HỘI </h2>
                    <h2 className="text-3xl roboto-6 text-red-600 mb-2">LẦN THỨ I, NHIỆM KỲ 2025 - 2030</h2>
-                   <h3 className="text-5xl mt-28 dancing-script text-red-600 my-5">Chào mừng Đại biểu</h3>
+                   <h3 className="text-4xl mt-28 dancing-script text-red-600 my-5">Chào mừng Đại biểu</h3>
                     {user.avatar && (
                         <img src={user.avatar} alt="Avatar" className="mx-auto mb-4 w-50 h-60 object-cover" />
                     )}
