@@ -164,7 +164,7 @@ const SeatDisplayPage: React.FC = () => {
         <div className="relative flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white p-8">
             <img src="/bg.jpg" alt="bg" className="w-full h-full object-cover absolute top-0 left-0 z-0" />
 
-            <div className="absolute top-[15%] left-30 md:grid hidden grid-cols-1 gap-1 p-1 bg-gray-800/10 backdrop-blur-md rounded-lg">
+            <div className="absolute top-[20%] left-30 md:grid hidden grid-cols-1 gap-1 p-1 bg-gray-800/10 backdrop-blur-md rounded-lg">
                 {createSeatNumbers(1, 6).map(seatNumber => (
                     <div
                         key={seatNumber}
