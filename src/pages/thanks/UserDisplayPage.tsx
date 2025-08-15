@@ -23,7 +23,7 @@ const UserDisplayPage: React.FC = () => {
         <div className="relative flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white p-8">
              <img src="/bg.jpg" alt="bg" className="w-full h-full object-cover absolute top-0 left-0 z-0" />
             {user ? (
-                <div className="mt-[-22%] p-4  rounded-xl text-center max-w-xl w-full animate-fade-in z-10">
+                <div className="mt-[-52%] p-4  rounded-xl text-center max-w-xl w-full animate-fade-in z-10">
                     <img src="/logo_dang.png" alt="Logo" className="mx-auto mb-5 w-40 h-30" />
                     <h2 className="text-3xl roboto-6 text-red-600 mb-2">ĐẠI HỘI ĐẠI BIỂU</h2>
                    <h2 className="text-3xl roboto-6 text-red-600 mb-2">ĐẢNG BỘ PHƯỜNG THÔNG TÂY HỘI </h2>
